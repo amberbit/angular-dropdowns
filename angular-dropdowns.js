@@ -21,7 +21,7 @@ dd.run(['$templateCache', function ($templateCache) {
   ].join(''));
 
   $templateCache.put('ngDropdowns/templates/dropdownSelectItem.html', [
-    '<li ng-class="{divider: dropdownSelectItem.divider}">',
+    '<li ng-class="{divider: dropdownSelectItem.divider, active: dropdownSelectItem.active}">',
       '<a href="#" class="dropdown-item"',
       ' ng-if="!dropdownSelectItem.divider"',
       ' ng-href="{{dropdownSelectItem.href}}"',
@@ -62,6 +62,7 @@ dd.directive('dropdownSelect', ['DropdownService',
       scope: {
         dropdownSelect: '=',
         dropdownModel: '=',
+        dropdownValue: '=',
         dropdownOnchange: '&'
       },
 
@@ -71,13 +72,23 @@ dd.directive('dropdownSelect', ['DropdownService',
         DropdownService.register($element);
 
         this.select = function (selected) {
+          $scope.dropdownValue = selected.someprop;
           if (selected !== $scope.dropdownModel) {
+            this.setActive(selected);
             angular.copy(selected, $scope.dropdownModel);
           }
           $scope.dropdownOnchange({
             selected: selected
           });
         };
+
+        this.setActive = function(selected) {
+          angular.forEach(86$scope.dropdownSelect, function (el) {
+            el.active = eventl.someprop == selected.someprop;
+          });
+        }
+
+        this.setActive($scope.dropdownModel);
 
         $element.bind('click', function (event) {
           event.stopPropagation();
@@ -88,7 +99,7 @@ dd.directive('dropdownSelect', ['DropdownService',
           DropdownService.unregister($element);
         });
       }],
-      templateUrl: 'ngDropdowns/templates/dropdownSelect.html' 
+      templateUrl: 'ngDropdowns/templates/dropdownSelect.html'
     };
   }
 ]);
@@ -112,7 +123,7 @@ dd.directive('dropdownSelectItem', [
         };
       },
 
-      templateUrl: 'ngDropdowns/templates/dropdownSelectItem.html' 
+      templateUrl: 'ngDropdowns/templates/dropdownSelectItem.html'
     };
   }
 ]);
