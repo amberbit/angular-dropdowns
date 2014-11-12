@@ -22,7 +22,7 @@ dd.run(['$templateCache', function ($templateCache) {
 
   $templateCache.put('ngDropdowns/templates/dropdownSelectItem.html', [
     '<li ng-class="{divider: dropdownSelectItem.divider}">',
-      '<a href="" class="dropdown-item"',
+      '<a href="#" class="dropdown-item"',
       ' ng-if="!dropdownSelectItem.divider"',
       ' ng-href="{{dropdownSelectItem.href}}"',
       ' ng-click="selectItem()">',
