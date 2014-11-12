@@ -12,7 +12,7 @@
   user-select:none;
 }
 
-.wrap-dd-select span.selected {
+.wrap-dd-select a.selected {
   color: #8a8a8a;
   background-color: #fff;
   background-image: image-url("dropdown-arrow.png");
