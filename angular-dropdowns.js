@@ -83,7 +83,7 @@ dd.directive('dropdownSelect', ['DropdownService',
         };
 
         this.setActive = function(selected) {
-          angular.forEach(86$scope.dropdownSelect, function (el) {
+          angular.forEach($scope.dropdownSelect, function (el) {
             el.active = eventl.someprop == selected.someprop;
           });
         }
