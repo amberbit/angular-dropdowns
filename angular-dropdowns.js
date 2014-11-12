@@ -9,7 +9,7 @@ var dd = angular.module('ngDropdowns', []);
 dd.run(['$templateCache', function ($templateCache) {
   $templateCache.put('ngDropdowns/templates/dropdownSelect.html', [
     '<div class="wrap-dd-select">',
-      '<span class="selected">{{dropdownModel[labelField]}}</span>',
+      '<a href="#" class="selected">{{dropdownModel[labelField]}}</a>',
       '<ul class="dropdown">',
         '<li ng-repeat="item in dropdownSelect"',
         ' class="dropdown-item"',
@@ -22,7 +22,7 @@ dd.run(['$templateCache', function ($templateCache) {
 
   $templateCache.put('ngDropdowns/templates/dropdownSelectItem.html', [
     '<li ng-class="{divider: dropdownSelectItem.divider}">',
-      '<a href="" class="dropdown-item"',
+      '<a href="#" class="dropdown-item"',
       ' ng-if="!dropdownSelectItem.divider"',
       ' ng-href="{{dropdownSelectItem.href}}"',
       ' ng-click="selectItem()">',
@@ -43,7 +43,7 @@ dd.run(['$templateCache', function ($templateCache) {
 
   $templateCache.put('ngDropdowns/templates/dropdownMenuItem.html', [
     '<li ng-class="{divider: dropdownMenuItem.divider}">',
-      '<a href="" class="dropdown-item"',
+      '<a href="#" class="dropdown-item"',
       ' ng-if="!dropdownMenuItem.divider"',
       ' ng-href="{{dropdownMenuItem.href}}"',
       ' ng-click="selectItem()">',

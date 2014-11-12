@@ -1,0 +1,97 @@
+/****** dropdown-select *******/
+
+.wrap-dd-select {
+  display: inline-block;
+  margin: 0;
+  min-width: inherit;
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  user-select:none;
+}
+
+.wrap-dd-select span.selected {
+  color: #8a8a8a;
+  background-color: #fff;
+  background-image: image-url("dropdown-arrow.png");
+  background-position: 100% center;
+  background-repeat: no-repeat;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  display: block;
+  font-family: 'open_sanssemibold';
+  font-size: 13px;
+  height: 32px;
+  line-height: normal;
+  padding: 6px 30px 5px 10px;
+  width: 100%;
+}
+
+.wrap-dd-select .dropdown {
+  position: absolute;
+  border: 1px solid rgba(138, 138, 138, 0.3) !important;
+  border-radius: 4px;
+  background-color: #fff;
+  border-color: #e0e0e0;
+  margin-top: 2px;
+  max-width: 100%;
+  width: 100% !important;
+  font-size: 0.875rem;
+  height: auto;
+  list-style: none outside none;
+  margin-left: 0;
+  max-height: none;
+  width: 100%;
+  z-index: 89;
+  left: -99999px;
+  top: 32px;
+  pointer-events: none;
+}
+
+.wrap-dd-select.active .dropdown {
+  left: 0;
+  top: -2px !important;
+  pointer-events: auto;
+}
+
+.wrap-dd-select.active .dropdown:focus, .wrap-dd-select.active .dropdown:hover {
+  border: 1px solid rgba(240, 65, 25, 1) !important;
+  box-shadow: 0 0 5px rgba(240, 65, 25, 0.3);
+}
+
+.wrap-dd-select .dropdown li {
+  line-height: 1.125rem;
+  margin: 0;
+}
+
+.wrap-dd-select .dropdown li:first-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.wrap-dd-select .dropdown li:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.wrap-dd-select .dropdown li:hover {
+  background: #f7f7f7;
+}
+
+.wrap-dd-select .dropdown li.divider {
+  padding: 1px 0 0;
+  background: #cccccc;
+}
+
+.wrap-dd-select .dropdown li a {
+  display: block;
+  padding: 5px 10px;
+  color: #5c5c5c;
+  font-size: 13px;
+}
+
+.wrap-dd-select .dropdown li.active a {
+  color: #e74328;
+}
