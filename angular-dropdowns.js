@@ -9,7 +9,7 @@ var dd = angular.module('ngDropdowns', []);
 dd.run(['$templateCache', function ($templateCache) {
   $templateCache.put('ngDropdowns/templates/dropdownSelect.html', [
     '<div class="wrap-dd-select">',
-      '<span class="selected">{{dropdownModel[labelField]}}</span>',
+      '<a href="#" class="selected">{{dropdownModel[labelField]}}</a>',
       '<ul class="dropdown">',
         '<li ng-repeat="item in dropdownSelect"',
         ' class="dropdown-item"',
