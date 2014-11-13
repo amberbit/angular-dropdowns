@@ -9,7 +9,7 @@ var dd = angular.module('ngDropdowns', []);
 dd.run(['$templateCache', function ($templateCache) {
   $templateCache.put('ngDropdowns/templates/dropdownSelect.html', [
     '<div class="wrap-dd-select">',
-      '<a href="" class="selected">{{dropdownModel || dropdownPlaceholder}}</a>',
+      '<a href="" class="selected">{{dropdownModel[labelField] || dropdownPlaceholder}}</a>',
       '<ul class="dropdown">',
         '<li ng-repeat="item in dropdownSelect"',
         ' class="dropdown-item"',
@@ -71,6 +71,22 @@ dd.directive('dropdownSelect', ['DropdownService',
         $scope.labelField = $attrs.dropdownItemLabel || 'text';
 
         DropdownService.register($element);
+
+        if (!$scope.dropdownModel) {
+          $scope.dropdownModel= {}
+        }
+
+        if (!$scope.dropdownSelect) {
+          $scope.dropdownSelect = []
+        }
+
+        angular.forEach($scope.dropdownSelect, function(el) {
+          if (el.someprop === $scope.dropdownValue) {
+            $scope.dropdownModel = el
+            return false;
+          }
+          return true;
+        });
 
         this.select = function (selected) {
           $scope.dropdownValue = selected.someprop;
