@@ -42,7 +42,8 @@
   height: auto;
   list-style: none outside none;
   margin-left: 0;
-  max-height: none;
+  max-height: 300px;
+  overflow: auto;
   width: 100%;
   z-index: 89;
   left: -99999px;
