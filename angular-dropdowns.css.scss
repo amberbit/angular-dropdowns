@@ -28,6 +28,10 @@
   padding: 6px 30px 5px 10px;
   width: 100%;
 }
+.wrap-dd-select a.selected:hover, .wrap-dd-select a.selected:focus {
+  border: 1px solid #f04119;
+  outline: none;
+}
 
 .wrap-dd-select .dropdown {
   position: absolute;
