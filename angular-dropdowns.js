@@ -82,7 +82,7 @@ dd.directive('dropdownSelect', ['DropdownService',
 
         angular.forEach($scope.dropdownSelect, function(el) {
           if (el.someprop === $scope.dropdownValue) {
-            $scope.dropdownModel = el
+            $scope.dropdownModel = angular.copy(el);
             return false;
           }
           return true;
