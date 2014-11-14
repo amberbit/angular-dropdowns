@@ -12,7 +12,7 @@
   user-select:none;
 }
 
-.wrap-dd-select a.selected {
+.wrap-dd-select > a {
   color: #8a8a8a;
   background-color: #fff;
   background-image: image-url("dropdown-arrow.png");
@@ -27,6 +27,9 @@
   line-height: normal;
   padding: 6px 30px 5px 10px;
   width: 100%;
+  &.selected {
+    color: #3d3d3d;
+  }
 }
 .wrap-dd-select a.selected:hover, .wrap-dd-select a.selected:focus {
   border: 1px solid #f04119;
