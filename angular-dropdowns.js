@@ -22,7 +22,7 @@ dd.run(['$templateCache', function ($templateCache) {
 
   $templateCache.put('ngDropdowns/templates/dropdownSelectItem.html', [
     '<li ng-class="{divider: dropdownSelectItem.divider, active: dropdownSelectItem.active}">',
-      '<a href="" class="dropdown-item"',
+      '<a href="#" class="dropdown-item"',
       ' ng-if="!dropdownSelectItem.divider"',
       ' ng-href="{{dropdownSelectItem.href}}"',
       ' ng-click="selectItem()">',
@@ -82,7 +82,7 @@ dd.directive('dropdownSelect', ['DropdownService',
 
         angular.forEach($scope.dropdownSelect, function(el) {
           if (el.someprop === $scope.dropdownValue) {
-            $scope.dropdownModel = angular.copy(el);
+            $scope.dropdownModel = el
             return false;
           }
           return true;
