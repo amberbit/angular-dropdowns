@@ -230,6 +230,13 @@ dd.factory('DropdownService', ['$document',
       });
     });
 
+    body.keydown(function (e) {
+      if (e.which == 9)
+        angular.forEach(_dropdowns, function (el) {
+          el.removeClass('active');
+        });
+    });
+
     service.register = function (ddEl) {
       _dropdowns.push(ddEl);
     };
