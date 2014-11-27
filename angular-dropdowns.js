@@ -80,13 +80,16 @@ dd.directive('dropdownSelect', ['DropdownService',
           $scope.dropdownSelect = []
         }
 
-        angular.forEach($scope.dropdownSelect, function(el) {
-          if (el.someprop === $scope.dropdownValue) {
-            $scope.dropdownModel = angular.copy(el);
-            return false;
-          }
-          return true;
-        });
+        this.updateSelected = function () {
+          $scope.dropdownModel = {}
+          angular.forEach($scope.dropdownSelect, function(el) {
+            if (el.someprop === $scope.dropdownValue) {
+              $scope.dropdownModel = angular.copy(el);
+              return false;
+            }
+            return true;
+          });
+        };
 
         this.select = function (selected) {
           $scope.dropdownValue = selected.someprop;
@@ -105,6 +108,7 @@ dd.directive('dropdownSelect', ['DropdownService',
           });
         }
 
+        this.updateSelected();
         this.setActive($scope.dropdownModel);
 
         $element.bind('click', function (event) {
@@ -115,6 +119,13 @@ dd.directive('dropdownSelect', ['DropdownService',
         $scope.$on('$destroy', function () {
           DropdownService.unregister($element);
         });
+
+        $scope.$watch('dropdownValue', function (_this) {
+          return function() {
+            _this.updateSelected();
+            _this.setActive($scope.dropdownModel);
+          };
+        }(this));
       }],
       templateUrl: 'ngDropdowns/templates/dropdownSelect.html'
     };
