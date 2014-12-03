@@ -238,6 +238,7 @@ dd.factory('DropdownService', ['$document',
     body.bind('click', function () {
       angular.forEach(_dropdowns, function (el) {
         el.removeClass('active');
+        el.removeClass('focused');
       });
     });
 
@@ -245,6 +246,7 @@ dd.factory('DropdownService', ['$document',
       if (e.which == 9)
         angular.forEach(_dropdowns, function (el) {
           el.removeClass('active');
+          el.removeClass('focused');
         });
     });
 
@@ -264,10 +266,12 @@ dd.factory('DropdownService', ['$document',
       angular.forEach(_dropdowns, function (el) {
         if (el !== ddEl) {
           el.removeClass('active');
+          el.removeClass('focused');
         }
       });
 
       ddEl.toggleClass('active');
+      ddEl.addClass('focused');
     };
 
     return service;
