@@ -46,7 +46,7 @@ app.controller('AppCtrl', function($scope) {
         }
     ];
 
-    $scope.ddSelectSelected = {}; // Must be an object
+    $scope.ddSelectSelected = "";
 });
 ```
 
@@ -59,7 +59,8 @@ You can optionally set `dropdown-item-label` to specify a different label field 
     <h1>Dropdown Select</h1>
     <p>You have selected: {{ddSelectSelected}}</p>
     <div dropdown-select="ddSelectOptions"
-        dropdown-model="ddSelectSelected"
+        dropdown-value="ddSelectSelected"
+        dropdown-placeholder="'select something'"
         dropdown-item-label="text" >
     </div>
 </div>
