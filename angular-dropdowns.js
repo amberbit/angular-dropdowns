@@ -82,6 +82,12 @@ dd.directive('dropdownSelect', ['DropdownService',
           };
         }(this));
 
+        $scope.$watch('dropdownSelect', function (_this) {
+          return function() {
+            _this.updateSelected();
+          };
+        }(this));
+
         $scope.selectItem = function (item) {
           $scope.select(item);
         };
