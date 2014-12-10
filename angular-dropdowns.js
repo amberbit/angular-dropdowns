@@ -44,8 +44,6 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
         $scope.nullOption = $attrs.dropdownNullable || false;
         $scope.dropdownKeyName = $attrs.dropdownKeyName || 'someprop';
 
-        console.debug($scope.labelField);
-
         DropdownService.register($element);
 
         $scope._selectedOption= {}
