@@ -11,9 +11,14 @@ dd.run(['$templateCache', function ($templateCache) {
     '<div class="wrap-dd-select">',
       '<a href="" ng-class="{selected: _selectedOption[labelField]}" >{{_selectedOption[labelField] || dropdownPlaceholder}}</a>',
       '<ul class="dropdown">',
+        '<li ng-show="nullOption" ng-class="{active: dropdownValue == null}">',
+          '<a href="" class="dropdown-item" tabindex="-1"',
+          ' ng-click="selectNullOption()">',
+            '{{dropdownPlaceholder}}',
+        '</li>',
         '<li ng-repeat="dropdownSelectItem in dropdownSelect" ng-class="{active: dropdownSelectItem.someprop == dropdownValue}">',
           '<a href="" class="dropdown-item" tabindex="-1"',
-          ' ng-click="selectItem(dropdownSelectItem)">',
+          ' ng-click="select(dropdownSelectItem)">',
             '{{dropdownSelectItem[labelField]}}',
           '</a>',
         '</li>',
@@ -22,8 +27,8 @@ dd.run(['$templateCache', function ($templateCache) {
   ].join(''));
 }]);
 
-dd.directive('dropdownSelect', ['DropdownService',
-  function (DropdownService) {
+dd.directive('dropdownSelect', ['DropdownService', '$timeout',
+  function (DropdownService, $timeout) {
     return {
       restrict: 'A',
       replace: true,
@@ -36,6 +41,7 @@ dd.directive('dropdownSelect', ['DropdownService',
 
       controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
         $scope.labelField = $attrs.dropdownItemLabel || 'text';
+        $scope.nullOption = $attrs.dropdownNullable || false;
 
         DropdownService.register($element);
 
@@ -60,9 +66,11 @@ dd.directive('dropdownSelect', ['DropdownService',
           $scope.dropdownValue = selected.someprop;
           angular.copy(selected, $scope._selectedOption);
 
-          $scope.dropdownOnchange({
-            selected: selected
-          });
+          $timeout(function() {
+            $scope.dropdownOnchange({
+              selected: selected
+            });
+          }, 0);
         };
 
         this.updateSelected();
@@ -88,8 +96,8 @@ dd.directive('dropdownSelect', ['DropdownService',
           };
         }(this));
 
-        $scope.selectItem = function (item) {
-          $scope.select(item);
+        $scope.selectNullOption = function () {
+          $scope.select({someprop: null});
         };
       }],
       templateUrl: 'ngDropdowns/templates/dropdownSelect.html'
