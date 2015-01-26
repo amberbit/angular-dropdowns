@@ -11,12 +11,13 @@ dd.run(['$templateCache', function ($templateCache) {
     '<div class="wrap-dd-select">',
       '<a href="" ng-class="{selected: _selectedOption[labelField]}" >{{_selectedOption[labelField] || dropdownPlaceholder}}</a>',
       '<ul class="dropdown">',
+        '<li ng-show="filterOption"><input id="filter" type="text" ng-model="search"/></li>',
         '<li ng-show="nullOption" ng-class="{active: dropdownValue == null}">',
           '<a href="" class="dropdown-item" tabindex="-1"',
           ' ng-click="selectNullOption()">',
             '{{dropdownPlaceholder}}',
         '</li>',
-        '<li ng-repeat="dropdownSelectItem in dropdownSelect" ng-class="{active: dropdownSelectItem[dropdownKeyName] == dropdownValue}">',
+        '<li ng-repeat="dropdownSelectItem in dropdownSelect | filter:search" ng-class="{active: dropdownSelectItem[dropdownKeyName] == dropdownValue}">',
           '<a href="" class="dropdown-item" tabindex="-1"',
           ' ng-click="select(dropdownSelectItem)">',
             '{{dropdownSelectItem[labelField]}}',
@@ -42,6 +43,7 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
       controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
         $scope.labelField = $attrs.dropdownItemLabel || 'text';
         $scope.nullOption = $attrs.dropdownNullable || false;
+        $scope.filterOption = $attrs.dropdownFilter || false;
         $scope.dropdownKeyName = $attrs.dropdownKeyName || 'someprop';
 
         DropdownService.register($element);
@@ -61,6 +63,7 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
             }
             return true;
           });
+          $scope.search = "";
         };
 
         $scope.select = function (selected) {
@@ -77,7 +80,11 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
         this.updateSelected();
 
         $element.bind('click', function (event) {
+          var filterScope =  $element.find("#filter").scope();
+          filterScope.search = "";
+          filterScope.$apply();
           event.stopPropagation();
+          $element.find('#filter').focus();
           DropdownService.toggleActive($element);
         });
 
