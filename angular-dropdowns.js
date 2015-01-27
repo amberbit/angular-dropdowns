@@ -11,7 +11,7 @@ dd.run(['$templateCache', function ($templateCache) {
     '<div class="wrap-dd-select">',
       '<a href="" ng-class="{selected: _selectedOption[labelField]}" >{{_selectedOption[labelField] || dropdownPlaceholder}}</a>',
       '<div class="dropdown">',
-        '<input ng-show="filterOption" id="filter" type="text" ng-model="search"/>',
+        '<input ng-show="filterOption" id="filter" type="text" ng-model="search" tabindex={{tabIndex}}/>',
         '<ul>',
           '<li ng-show="nullOption" ng-class="{active: dropdownValue == null}">',
             '<a href="" class="dropdown-item" tabindex="-1"',
@@ -47,6 +47,7 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
         $scope.nullOption = $attrs.dropdownNullable || false;
         $scope.filterOption = $attrs.dropdownFilter || false;
         $scope.dropdownKeyName = $attrs.dropdownKeyName || 'someprop';
+        $scope.tabIndex = $attrs.tabindex || 100;
 
         DropdownService.register($element);
 
