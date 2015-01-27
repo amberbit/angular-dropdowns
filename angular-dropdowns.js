@@ -10,20 +10,22 @@ dd.run(['$templateCache', function ($templateCache) {
   $templateCache.put('ngDropdowns/templates/dropdownSelect.html', [
     '<div class="wrap-dd-select">',
       '<a href="" ng-class="{selected: _selectedOption[labelField]}" >{{_selectedOption[labelField] || dropdownPlaceholder}}</a>',
-      '<ul class="dropdown">',
-        '<li ng-show="filterOption"><input id="filter" type="text" ng-model="search"/></li>',
-        '<li ng-show="nullOption" ng-class="{active: dropdownValue == null}">',
-          '<a href="" class="dropdown-item" tabindex="-1"',
-          ' ng-click="selectNullOption()">',
-            '{{dropdownPlaceholder}}',
-        '</li>',
-        '<li ng-repeat="dropdownSelectItem in dropdownSelect | filter:search" ng-class="{active: dropdownSelectItem[dropdownKeyName] == dropdownValue}">',
-          '<a href="" class="dropdown-item" tabindex="-1"',
-          ' ng-click="select(dropdownSelectItem)">',
-            '{{dropdownSelectItem[labelField]}}',
-          '</a>',
-        '</li>',
-      '</ul>',
+      '<div class="dropdown">',
+        '<input ng-show="filterOption" id="filter" type="text" ng-model="search"/>',
+        '<ul>',
+          '<li ng-show="nullOption" ng-class="{active: dropdownValue == null}">',
+            '<a href="" class="dropdown-item" tabindex="-1"',
+            ' ng-click="selectNullOption()">',
+              '{{dropdownPlaceholder}}',
+          '</li>',
+          '<li ng-repeat="dropdownSelectItem in dropdownSelect | filter:search" ng-class="{active: dropdownSelectItem[dropdownKeyName] == dropdownValue}">',
+            '<a href="" class="dropdown-item" tabindex="-1"',
+            ' ng-click="select(dropdownSelectItem)">',
+              '{{dropdownSelectItem[labelField]}}',
+            '</a>',
+          '</li>',
+        '</ul>',
+        '</div>',
     '</div>'
   ].join(''));
 }]);
@@ -80,12 +82,17 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
         this.updateSelected();
 
         $element.bind('click', function (event) {
-          var filterScope =  $element.find("#filter").scope();
-          filterScope.search = "";
-          filterScope.$apply();
           event.stopPropagation();
-          $element.find('#filter').focus();
           DropdownService.toggleActive($element);
+          return;
+        });
+
+
+        $element.bind('focusin', function (event) {
+          event.stopPropagation();
+          $element.find("input")[0].focus();
+          DropdownService.setActive($element);
+          return;
         });
 
         $scope.$on('$destroy', function () {
@@ -129,11 +136,12 @@ dd.factory('DropdownService', ['$document',
     });
 
     body.bind('keydown', function (e) {
-      if (e.which == 9)
+      if (e.which == 9) {
         angular.forEach(_dropdowns, function (el) {
           el.removeClass('active');
           el.removeClass('focused');
         });
+      };
     });
 
     service.register = function (ddEl) {
@@ -157,6 +165,18 @@ dd.factory('DropdownService', ['$document',
       });
 
       ddEl.toggleClass('active');
+      ddEl.addClass('focused');
+    };
+
+    service.setActive = function (ddEl) {
+      angular.forEach(_dropdowns, function (el) {
+        if (el !== ddEl) {
+          el.removeClass('active');
+          el.removeClass('focused');
+        }
+      });
+
+      ddEl.addClass('active');
       ddEl.addClass('focused');
     };
 
