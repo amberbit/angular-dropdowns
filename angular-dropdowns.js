@@ -10,7 +10,7 @@ dd.run(['$templateCache', function ($templateCache) {
   $templateCache.put('ngDropdowns/templates/dropdownSelect.html', [
     '<div class="wrap-dd-select">',
       '<a href="" ng-class="{selected: _selectedOption[labelField]}" >{{_selectedOption[labelField] || dropdownPlaceholder}}</a>',
-      '<div class="dropdown">',
+      '<div class="dropdown" ng-if="dropdownSelect.length != 0">',
         '<input ng-show="filterOption" id="filter" type="text" ng-model="search" tabindex={{tabIndex}}/>',
         '<ul>',
           '<li ng-show="nullOption" ng-class="{active: dropdownValue == null}">',
