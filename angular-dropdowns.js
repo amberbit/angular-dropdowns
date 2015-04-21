@@ -24,6 +24,10 @@ dd.run(['$templateCache', function ($templateCache) {
               '{{dropdownSelectItem[labelField]}}',
             '</a>',
           '</li>',
+          '<li ng-show = "dropdownLinkLabel">',
+          '<hr/>',
+          '<a class = "special-link" ng-href="#" ng-click="dropdownLinkFunction()">{{dropdownLinkLabel}}</a>',
+          '</li>',
         '</ul>',
         '</div>',
     '</div>'
@@ -39,7 +43,8 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
         dropdownSelect: '=',
         dropdownPlaceholder: '=',
         dropdownValue: '=',
-        dropdownOnchange: '&'
+        dropdownOnchange: '&',
+        dropdownLinkFunction: '&'
       },
 
       controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
@@ -48,6 +53,7 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
         $scope.filterOption = $attrs.dropdownFilter || false;
         $scope.dropdownKeyName = $attrs.dropdownKeyName || 'someprop';
         $scope.tabIndex = $attrs.tabindex || 100;
+        $scope.dropdownLinkLabel = $attrs.dropdownLinkLabel;
 
         DropdownService.register($element);
 

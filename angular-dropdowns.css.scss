@@ -112,6 +112,13 @@
   background: #cccccc;
 }
 
+.wrap-dd-select .dropdown li hr {
+  margin: 0 0 5px;
+}
+.wrap-dd-select .dropdown li a.special-link {
+  color: #e74328;
+  margin-bottom: 5px;
+}
 .wrap-dd-select .dropdown li a {
   display: block;
   padding: 5px 10px;
