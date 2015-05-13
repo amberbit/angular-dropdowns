@@ -10,7 +10,7 @@ dd.run(['$templateCache', function ($templateCache) {
   $templateCache.put('ngDropdowns/templates/dropdownSelect.html', [
     '<div class="wrap-dd-select">',
       '<a href="" ng-class="{selected: _selectedOption[labelField]}" >{{_selectedOption[labelField] || dropdownPlaceholder}}</a>',
-      '<div class="dropdown" ng-if="dropdownSelect.length != 0">',
+      '<div class="dropdown" ng-if="dropdownSelect.length != 0 || filterOption || dropdownLinkLabel">',
         '<input ng-show="filterOption" id="filter" type="text" ng-model="search" tabindex={{tabIndex}}/>',
         '<ul>',
           '<li ng-show="nullOption" ng-class="{active: dropdownValue == null}">',
@@ -25,8 +25,8 @@ dd.run(['$templateCache', function ($templateCache) {
             '</a>',
           '</li>',
           '<li ng-show = "dropdownLinkLabel">',
-          '<hr/>',
-          '<a class = "special-link" ng-href="#" ng-click="dropdownLinkFunction()">{{dropdownLinkLabel}}</a>',
+            '<hr/>',
+            '<a class = "special-link" ng-href="#" ng-click="dropdownLinkFunction()">{{dropdownLinkLabel}}</a>',
           '</li>',
         '</ul>',
         '</div>',
@@ -97,7 +97,9 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
 
         $element.bind('focusin', function (event) {
           event.stopPropagation();
-          $element.find("input")[0].focus();
+          if ($scope.filterOption) {
+            $element.find("input")[0].focus();
+          }
           DropdownService.setActive($element);
           return;
         });

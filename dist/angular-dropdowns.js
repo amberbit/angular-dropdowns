@@ -10,19 +10,26 @@ dd.run(['$templateCache', function ($templateCache) {
   $templateCache.put('ngDropdowns/templates/dropdownSelect.html', [
     '<div class="wrap-dd-select">',
       '<a href="" ng-class="{selected: _selectedOption[labelField]}" >{{_selectedOption[labelField] || dropdownPlaceholder}}</a>',
-      '<ul class="dropdown">',
-        '<li ng-show="nullOption" ng-class="{active: dropdownValue == null}">',
-          '<a href="" class="dropdown-item" tabindex="-1"',
-          ' ng-click="selectNullOption()">',
-            '{{dropdownPlaceholder}}',
-        '</li>',
-        '<li ng-repeat="dropdownSelectItem in dropdownSelect" ng-class="{active: dropdownSelectItem[dropdownKeyName] == dropdownValue}">',
-          '<a href="" class="dropdown-item" tabindex="-1"',
-          ' ng-click="select(dropdownSelectItem)">',
-            '{{dropdownSelectItem[labelField]}}',
-          '</a>',
-        '</li>',
-      '</ul>',
+      '<div class="dropdown" ng-if="dropdownSelect.length != 0 || filterOption || dropdownLinkLabel">',
+        '<input ng-show="filterOption" id="filter" type="text" ng-model="search" tabindex={{tabIndex}}/>',
+        '<ul>',
+          '<li ng-show="nullOption" ng-class="{active: dropdownValue == null}">',
+            '<a href="" class="dropdown-item" tabindex="-1"',
+            ' ng-click="selectNullOption()">',
+              '{{dropdownPlaceholder}}',
+          '</li>',
+          '<li ng-repeat="dropdownSelectItem in dropdownSelect | filter:search" ng-class="{active: dropdownSelectItem[dropdownKeyName] == dropdownValue}">',
+            '<a href="" class="dropdown-item" tabindex="-1"',
+            ' ng-click="select(dropdownSelectItem)">',
+              '{{dropdownSelectItem[labelField]}}',
+            '</a>',
+          '</li>',
+          '<li ng-show = "dropdownLinkLabel">',
+            '<hr/>',
+            '<a class = "special-link" ng-href="#" ng-click="dropdownLinkFunction()">{{dropdownLinkLabel}}</a>',
+          '</li>',
+        '</ul>',
+        '</div>',
     '</div>'
   ].join(''));
 }]);
@@ -36,13 +43,17 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
         dropdownSelect: '=',
         dropdownPlaceholder: '=',
         dropdownValue: '=',
-        dropdownOnchange: '&'
+        dropdownOnchange: '&',
+        dropdownLinkFunction: '&'
       },
 
       controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
         $scope.labelField = $attrs.dropdownItemLabel || 'text';
         $scope.nullOption = $attrs.dropdownNullable || false;
+        $scope.filterOption = $attrs.dropdownFilter || false;
         $scope.dropdownKeyName = $attrs.dropdownKeyName || 'someprop';
+        $scope.tabIndex = $attrs.tabindex || 100;
+        $scope.dropdownLinkLabel = $attrs.dropdownLinkLabel;
 
         DropdownService.register($element);
 
@@ -61,6 +72,7 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
             }
             return true;
           });
+          $scope.search = "";
         };
 
         $scope.select = function (selected) {
@@ -79,6 +91,17 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
         $element.bind('click', function (event) {
           event.stopPropagation();
           DropdownService.toggleActive($element);
+          return;
+        });
+
+
+        $element.bind('focusin', function (event) {
+          event.stopPropagation();
+          if ($scope.filterOption) {
+            $element.find("input")[0].focus();
+          }
+          DropdownService.setActive($element);
+          return;
         });
 
         $scope.$on('$destroy', function () {
@@ -122,11 +145,12 @@ dd.factory('DropdownService', ['$document',
     });
 
     body.bind('keydown', function (e) {
-      if (e.which == 9)
+      if (e.which == 9) {
         angular.forEach(_dropdowns, function (el) {
           el.removeClass('active');
           el.removeClass('focused');
         });
+      };
     });
 
     service.register = function (ddEl) {
@@ -150,6 +174,18 @@ dd.factory('DropdownService', ['$document',
       });
 
       ddEl.toggleClass('active');
+      ddEl.addClass('focused');
+    };
+
+    service.setActive = function (ddEl) {
+      angular.forEach(_dropdowns, function (el) {
+        if (el !== ddEl) {
+          el.removeClass('active');
+          el.removeClass('focused');
+        }
+      });
+
+      ddEl.addClass('active');
       ddEl.addClass('focused');
     };
 
