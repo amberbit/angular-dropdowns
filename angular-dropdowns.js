@@ -18,7 +18,7 @@ dd.run(['$templateCache', function ($templateCache) {
             ' ng-click="selectNullOption()">',
               '{{dropdownPlaceholder}}',
           '</li>',
-          '<li ng-repeat="dropdownSelectItem in dropdownSelect | filter:search" ng-class="{active: dropdownSelectItem[dropdownKeyName] == dropdownValue}">',
+          '<li ng-repeat="dropdownSelectItem in dropdownSelect | filter:search" ng-class="{active: dropdownSelectItem[keyName()] == dropdownValue}">',
             '<a href="" class="dropdown-item" tabindex="-1"',
             ' ng-click="select(dropdownSelectItem)">',
               '{{dropdownSelectItem[labelField]}}',
@@ -44,16 +44,20 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
         dropdownPlaceholder: '=',
         dropdownValue: '=',
         dropdownOnchange: '&',
-        dropdownLinkFunction: '&'
+        dropdownLinkFunction: '&',
+        labelField: '@dropdownItemLabel',
+        dropdownKeyName: '@'
       },
 
       controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
-        $scope.labelField = $attrs.dropdownItemLabel || 'text';
         $scope.nullOption = $attrs.dropdownNullable || false;
         $scope.filterOption = $attrs.dropdownFilter || false;
-        $scope.dropdownKeyName = $attrs.dropdownKeyName || 'someprop';
         $scope.tabIndex = $attrs.tabindex || 100;
         $scope.dropdownLinkLabel = $attrs.dropdownLinkLabel;
+
+        $scope.keyName = function () {
+          return $scope.dropdownKeyName || 'someprop';
+        }
 
         DropdownService.register($element);
 
@@ -66,7 +70,7 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
         this.updateSelected = function () {
           $scope._selectedOption = {}
           angular.forEach($scope.dropdownSelect, function(el) {
-            if (el[$scope.dropdownKeyName] === $scope.dropdownValue) {
+            if (el[$scope.keyName()] === $scope.dropdownValue) {
               $scope._selectedOption = angular.copy(el);
               return false;
             }
@@ -76,7 +80,7 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
         };
 
         $scope.select = function (selected) {
-          $scope.dropdownValue = selected[$scope.dropdownKeyName];
+          $scope.dropdownValue = selected[$scope.keyName()];
           angular.copy(selected, $scope._selectedOption);
 
           $timeout(function() {
@@ -122,7 +126,7 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
 
         $scope.selectNullOption = function () {
           var nullObject = {};
-          nullObject[$scope.dropdownKeyName] = null;
+          nullObject[$scope.keyName()] = null;
           $scope.select(nullObject);
         };
       }],
