@@ -44,16 +44,16 @@ dd.directive('dropdownSelect', ['DropdownService', '$timeout',
         dropdownPlaceholder: '=',
         dropdownValue: '=',
         dropdownOnchange: '&',
-        dropdownLinkFunction: '&',
         labelField: '@dropdownItemLabel',
-        dropdownKeyName: '@'
+        dropdownKeyName: '@',
+        nullOption: '=dropdownNullable',
+        filterOption: '=dropdownFilter',
+        dropdownLinkFunction: '&',
+        dropdownLinkLabel: '@'
       },
 
       controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
-        $scope.nullOption = $attrs.dropdownNullable || false;
-        $scope.filterOption = $attrs.dropdownFilter || false;
         $scope.tabIndex = $attrs.tabindex || 100;
-        $scope.dropdownLinkLabel = $attrs.dropdownLinkLabel;
 
         $scope.keyName = function () {
           return $scope.dropdownKeyName || 'someprop';
